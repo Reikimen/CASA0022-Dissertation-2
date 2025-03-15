@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  ai-voice-assistant:
+    build: .
+    container_name: ai-voice-assistant
+    ports:
+      - "11434:11434"    # Ollama API端口
+      - "8000:8000/udp"  # ESP32录音上传端口
+      - "8080:8080"      # HTTP/WebSocket服务
+      - "8888:8888"      # Jupyter Lab端口
+      - "1883:1883"      # MQTT(可选)
+    volumes:
+      - ./models:/app/models    # 其他AI模型
+      - ./audio:/app/audio      # 音频文件
+      - ./scripts:/app/scripts  # 脚本文件
+      - ./config:/app/config    # 配置文件
+      - ./notebooks:/app/notebooks  # Jupyter笔记本
+      - ollama_data:/root/.ollama  # Ollama模型持久存储
+    environment:
+      - TZ=Asia/Shanghai
+      - WHISPER_MODEL=small     # Whisper模型大小(tiny/base/small/medium/large)
+      - OLLAMA_MODEL=llama3     # 使用的Ollama模型
+      - EDGE_TTS_VOICE=zh-CN-XiaoxiaoNeural  # TTS语音模型
+      - JUPYTER_ENABLE=true     # 启用Jupyter
+      - JUPYTER_TOKEN=aivoiceassistant  # Jupyter访问token
+    restart: unless-stopped
+    # 资源限制(根据Mac性能调整)
+    deploy:
+      resources:
+        limits:
+          memory: 8G    # 内存限制
+        reservations:
+          memory: 4G    # 内存保留
+
+volumes:
+  ollama_data:  # 持久化存储Ollama模型

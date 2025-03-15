@@ -1,0 +1,22 @@
+# AI语音处理核心依赖
+openai-whisper==20231117
+# 移除 piper-tts==1.2.0
+edge-tts==6.1.9  # 替代piper-tts
+
+# 音频处理
+librosa==0.10.1
+soundfile==0.12.1
+numpy==1.24.3
+scipy==1.10.1
+
+# 网络通信
+fastapi==0.103.1
+uvicorn==0.23.2
+websockets==11.0.3
+paho-mqtt==2.1.0  # 修改了版本
+requests==2.31.0
+
+# 工具
+python-dotenv==1.0.0
+pydantic==2.4.2
+loguru==0.7.2
